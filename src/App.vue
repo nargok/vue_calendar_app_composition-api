@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
-    <router-view />
-    <Footer />
-  </div>
+  <v-app>
+    <v-container fruid pt-0>
+      <router-view />
+      <Footer />
+    </v-container>
+  </v-app>
 </template>
 
 <script>
