@@ -109,7 +109,12 @@
 
 <script>
 import { defineComponent, reactive, toRefs } from '@vue/composition-api';
-import { profileStore } from '@/store/profile';
+import {
+  profileStore,
+  updateThemeColor,
+  updateUserName,
+  updateNickname,
+} from '@/store/profile';
 
 export default defineComponent({
   setup() {
@@ -125,7 +130,7 @@ export default defineComponent({
     const saveFileContent = () => {};
 
     const saveThemeColor = () => {
-      profileStore.profile.themeColor = state.newThemeColor.hex;
+      updateThemeColor(state.newThemeColor.hex);
     };
 
     const editUserName = () => {
@@ -134,7 +139,7 @@ export default defineComponent({
     };
 
     const saveUserName = () => {
-      profileStore.profile.userName = state.newUserName;
+      updateUserName(state.newUserName);
       state.isOpenEditUserNameDialog = false;
     };
 
@@ -148,13 +153,14 @@ export default defineComponent({
     };
 
     const saveUserNickname = () => {
-      profileStore.profile.nickname = state.newNickName;
+      updateNickname(state.newNickName);
       state.isOpenEditNicknameDialog = false;
     };
 
     const closeEditUserNicknameDialog = () => {
       state.isOpenEditNicknameDialog = false;
     };
+
     return {
       ...toRefs(state),
       saveFileContent,
