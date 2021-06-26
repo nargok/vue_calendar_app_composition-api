@@ -1,5 +1,5 @@
 <template>
-  <v-footer>
+  <v-footer v-if="signInUser" app class="pa-0">
     <v-bottom-navigation grow dark>
       <v-btn class="my-auto" height="56" @click="routerPush('/')">
         <span>home</span>
@@ -17,24 +17,52 @@
         <span>monthly</span>
         <v-icon large>event_note</v-icon>
       </v-btn>
-      <v-menu>
-        <template v-slot:activator="{}">
-          <div>
-            <v-avatar>
-              <!-- <span class="white--text body-2" v-text="namihei" /> -->
+      <v-menu top open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <div class="py-1 px-1 text-center" v-on="on">
+            <v-avatar :color="signInUser.themeColor">
+              <span class="white--text body-2" v-text="signInUser.nickname" />
             </v-avatar>
           </div>
         </template>
+        <v-card>
+          <v-list>
+            <v-list-item v-for="(item, index) in items" :key="index" link>
+              <v-list-item-icon>
+                <v-icon v-text="item.icon" />
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-lit-item-title v-text="item.title" />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-card-actions>
+            <v-btn @click="signOut">サインアウト</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-menu>
     </v-bottom-navigation>
   </v-footer>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, reactive, toRefs } from '@vue/composition-api';
+import { profileMockData } from '@/store/profile';
 
 export default defineComponent({
   setup(props, context) {
+    const state = reactive({
+      items: [
+        {
+          title: 'プロフィール',
+          icon: 'account_circle',
+          methodName: 'profile',
+        },
+        { title: '共有する', icon: 'share', methodName: 'share' },
+      ],
+      signInUser: profileMockData,
+    });
+
     const routerPush = (path) => {
       context.root.$router.push(
         path,
@@ -55,6 +83,7 @@ export default defineComponent({
       routerPush('/sign-in');
     };
     return {
+      ...toRefs(state),
       routerPush,
       profile,
       share,
