@@ -32,7 +32,7 @@
                 <v-icon v-text="item.icon" />
               </v-list-item-icon>
               <v-list-item-content>
-                <v-lit-item-title v-text="item.title" />
+                <v-list-item-title v-text="item.title" />
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -63,6 +63,10 @@ export default defineComponent({
       signInUser: profileMockData,
     });
 
+    const handleMethod = (methodName) => {
+      eval(methodName)();
+    };
+
     const routerPush = (path) => {
       context.root.$router.push(
         path,
@@ -84,6 +88,7 @@ export default defineComponent({
     };
     return {
       ...toRefs(state),
+      handleMethod,
       routerPush,
       profile,
       share,
