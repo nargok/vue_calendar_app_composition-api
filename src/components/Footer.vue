@@ -46,8 +46,13 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs } from '@vue/composition-api';
-import { profileMockData } from '@/store/profile';
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  computed,
+} from '@vue/composition-api';
+import { profileStore } from '@/store/profile';
 
 export default defineComponent({
   setup(props, context) {
@@ -60,19 +65,10 @@ export default defineComponent({
         },
         { title: '共有する', icon: 'share', methodName: 'share' },
       ],
-      signInUser: profileMockData,
     });
 
     const handleMethod = (methodName) => {
       eval(methodName)();
-    };
-
-    const routerPush = (path) => {
-      context.root.$router.push(
-        path,
-        () => {},
-        () => {},
-      );
     };
 
     const profile = () => {
@@ -83,9 +79,23 @@ export default defineComponent({
       routerPush('/share');
     };
 
+    const signInUser = computed(() => {
+      return profileStore.profile;
+    });
+
     const signOut = () => {
+      profileStore.profile = null;
       routerPush('/sign-in');
     };
+
+    const routerPush = (path) => {
+      context.root.$router.push(
+        path,
+        () => {},
+        () => {},
+      );
+    };
+
     return {
       ...toRefs(state),
       handleMethod,
@@ -93,6 +103,7 @@ export default defineComponent({
       profile,
       share,
       signOut,
+      signInUser,
     };
   },
 });
