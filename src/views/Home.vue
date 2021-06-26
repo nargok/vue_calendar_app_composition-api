@@ -20,6 +20,32 @@
         />
       </div>
       <v-divider class="my-4" />
+      <v-timeline v-if="displayTimeline" class="mb-12">
+        <v-timeline-item
+          v-for="(event, index) in filteredEventsHasTime"
+          :key="index"
+          class="text-left"
+          right
+          :color="getEventColor(event)"
+        >
+          <!-- 縦線を挟んで向かい側に時間を表示する -->
+          <template v-slot:opposite>
+            <span v-text="event.startTime" />
+          </template>
+          <span class="pl-4" v-text="event.name" />
+        </v-timeline-item>
+      </v-timeline>
+      <v-row align="center" justify="center">
+        <v-switch
+          v-for="(sharedUser, index) in sharedUsers"
+          :key="index"
+          v-model="sharedUser.display"
+          class="ml-4 pt-0"
+          :color="sharedUser.themeColor"
+          :label="sharedUser.nickname"
+          hide-details
+        />
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -36,7 +62,7 @@ import { sharedUserStore, getThemeColor } from '@/store/shared-user';
 import { todayCalendarEventMockData } from '@/store/calendar-event';
 
 export default defineComponent({
-  setup(props, context) {
+  setup() {
     const state = reactive({
       today: parseDate(new Date()),
       displayWeekday: computed(() => {
@@ -48,14 +74,24 @@ export default defineComponent({
           .filter((user) => user.display)
           .map((user) => user.userId);
 
-        // console.log('user_ids', displayUserIds);
-
         const events = todayCalendarEventMockData.filter(
           (event) => displayUserIds.includes(event.userId) && !event.startTime,
         );
 
-        // console.log('events', events);
         return events;
+      }),
+      filteredEventsHasTime: computed(() => {
+        const displayUserIds = state.sharedUsers
+          .filter((user) => user.display)
+          .map((user) => user.userId);
+
+        const events = todayCalendarEventMockData.filter(
+          (event) => displayUserIds.includes(event.userId) && event.startTime,
+        );
+        return events;
+      }),
+      displayTimeline: computed(() => {
+        return state.filteredEventsHasTime.length > 0;
       }),
     });
 
@@ -67,36 +103,9 @@ export default defineComponent({
       return getThemeColor(event.userId);
     };
 
-    const calendar = () => {
-      context.root.$router.push(
-        'calendar/month',
-        // () => {},
-        // () => {},
-      );
-    };
-
-    const profile = () => {
-      context.root.$router.push(
-        'profile',
-        () => {},
-        () => {},
-      );
-    };
-
-    const share = () => {
-      context.root.$router.push(
-        'share',
-        () => {},
-        () => {},
-      );
-    };
-
     return {
       ...toRefs(state),
       getEventColor,
-      calendar,
-      profile,
-      share,
     };
   },
 });
