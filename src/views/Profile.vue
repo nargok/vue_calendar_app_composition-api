@@ -97,6 +97,12 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-text-field
+        v-model="profile.mailAddress"
+        readonly
+        label="メールアドレス"
+      />
+      <small class="float-left">必須フィールドを示します</small>
     </v-col>
   </v-row>
 </template>
