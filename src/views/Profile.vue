@@ -32,7 +32,7 @@
       <v-text-field
         v-model="profile.userName"
         readonly
-        label="ユーザー名"
+        label="ユーザー名*"
         append-outer-icon="edit"
         class="mt-4"
         @click:append-outer.stop="editUserName"
@@ -56,6 +56,42 @@
               キャンセル
             </v-btn>
             <v-btn color="blue darken-1" text @click="saveUserName">
+              保存する
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-text-field
+        v-model="profile.nickname"
+        readonly
+        label="ニックネーム*"
+        append-outer-icon="edit"
+        class="mt-4"
+        @click:append-outer.stop="editUserNickname"
+      />
+      <v-dialog
+        v-model="isOpenEditNicknameDialog"
+        max-width="600"
+        open-on-hover
+      >
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-text-field v-model="newNickName" label="ニックネーム" />
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="closeEditUserNicknameDialog"
+            >
+              キャンセル
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="saveUserNickname">
               保存する
             </v-btn>
           </v-card-actions>
@@ -100,6 +136,19 @@ export default defineComponent({
       state.isOpenEditUserNameDialog = false;
     };
 
+    const editUserNickname = () => {
+      state.newNickName = state.profile.nickname;
+      state.isOpenEditNicknameDialog = true;
+    };
+
+    const saveUserNickname = () => {
+      profileStore.profile.nickname = state.newNickName;
+      state.isOpenEditNicknameDialog = false;
+    };
+
+    const closeEditUserNicknameDialog = () => {
+      state.isOpenEditNicknameDialog = false;
+    };
     return {
       ...toRefs(state),
       saveFileContent,
@@ -107,6 +156,9 @@ export default defineComponent({
       editUserName,
       saveUserName,
       closeEditUserNameDialog,
+      editUserNickname,
+      saveUserNickname,
+      closeEditUserNicknameDialog,
     };
   },
 });
