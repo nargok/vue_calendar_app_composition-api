@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <h1>共有</h1>
-  </div>
+  <v-row>
+    <v-col>
+      <p class="display-1 py-12">共有する</p>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

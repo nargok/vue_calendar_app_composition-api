@@ -18,7 +18,7 @@ export const updateUserName = (userName) => {
   update(profileStore.profile);
 };
 
-export const updateUserNickname = (nickname) => {
+export const updateNickname = (nickname) => {
   profileStore.profile.nickname = nickname;
   update(profileStore.profile);
 };
