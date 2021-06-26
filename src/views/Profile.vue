@@ -37,6 +37,30 @@
         class="mt-4"
         @click:append-outer.stop="editUserName"
       />
+      <v-dialog
+        v-model="isOpenEditUserNameDialog"
+        max-width="600"
+        open-on-hover
+      >
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-text-field v-model="newUserName" label="ユーザー名" />
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="blue darken-1" text @click="closeEditUserNameDialog">
+              キャンセル
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="saveUserName">
+              保存する
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
@@ -63,8 +87,17 @@ export default defineComponent({
     };
 
     const editUserName = () => {
-      state.userName = state.profile.userName;
+      state.newUserName = state.profile.userName;
       state.isOpenEditUserNameDialog = true;
+    };
+
+    const saveUserName = () => {
+      profileStore.profile.userName = state.newUserName;
+      state.isOpenEditUserNameDialog = false;
+    };
+
+    const closeEditUserNameDialog = () => {
+      state.isOpenEditUserNameDialog = false;
     };
 
     return {
@@ -72,6 +105,8 @@ export default defineComponent({
       saveFileContent,
       saveThemeColor,
       editUserName,
+      saveUserName,
+      closeEditUserNameDialog,
     };
   },
 });
