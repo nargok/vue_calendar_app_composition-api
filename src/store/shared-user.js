@@ -43,3 +43,15 @@ export const searchUsers = (partOfNickname) => {
     user.nickname.startsWith(partOfNickname),
   );
 };
+
+export const getThemeColor = (userId) => {
+  const defaultColor = '#f44336';
+  const user = sharedUserStore.sharedUsers.find(
+    (user) => user.userId === userId,
+  );
+  if (!user) {
+    return defaultColor;
+  }
+
+  return user.themeColor;
+};

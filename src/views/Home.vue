@@ -11,6 +11,15 @@
           v-text="displayWeekday"
         />
       </v-row>
+      <div v-for="(event, index) in filteredEvents" :key="index">
+        <v-chip
+          class="mt-2"
+          :color="getEventColor(event)"
+          text-color="white"
+          v-text="event.name"
+        />
+      </div>
+      <v-divider class="my-4" />
     </v-col>
   </v-row>
 </template>
@@ -23,6 +32,8 @@ import {
   reactive,
 } from '@vue/composition-api';
 import { parseDate } from 'vuetify/lib/components/VCalendar/util/timestamp';
+import { sharedUserStore, getThemeColor } from '@/store/shared-user';
+import { todayCalendarEventMockData } from '@/store/calendar-event';
 
 export default defineComponent({
   setup(props, context) {
@@ -31,7 +42,30 @@ export default defineComponent({
       displayWeekday: computed(() => {
         return ['日', '月', '火', '水', '木', '金', '土'][state.today.weekday];
       }),
+      sharedUsers: sharedUserStore.sharedUsers,
+      filteredEvents: computed(() => {
+        const displayUserIds = state.sharedUsers
+          .filter((user) => user.display)
+          .map((user) => user.userId);
+
+        // console.log('user_ids', displayUserIds);
+
+        const events = todayCalendarEventMockData.filter(
+          (event) => displayUserIds.includes(event.userId) && !event.startTime,
+        );
+
+        // console.log('events', events);
+        return events;
+      }),
     });
+
+    const getEventColor = (event) => {
+      if (!event) {
+        return;
+      }
+
+      return getThemeColor(event.userId);
+    };
 
     const calendar = () => {
       context.root.$router.push(
@@ -59,6 +93,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      getEventColor,
       calendar,
       profile,
       share,

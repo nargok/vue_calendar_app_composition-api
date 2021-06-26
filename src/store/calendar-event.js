@@ -18,3 +18,16 @@ export const calendarEvent = [
     shared: true,
   },
 ];
+
+export const todayCalendarEventMockData = [
+  {
+    id: 20,
+    userId: 1,
+    name: '朝会',
+  },
+  {
+    id: 20,
+    userId: 1,
+    name: 'マーケティング施策検討',
+  },
+];
