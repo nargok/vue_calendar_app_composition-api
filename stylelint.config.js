@@ -2,10 +2,10 @@ module.exports = {
   plugins: ['stylelint-order'],
   extends: ['stylelint-config-recommended-scss'],
   rules: {
-    'selector-preudo-element-no-unknown': [
+    'selector-pseudo-element-no-unknown': [
       true,
       {
-        ignorePreudoElements: ['v-deep'],
+        ignorePseudoElements: ['v-deep'],
       },
     ],
     'order/order': ['custom-properties', 'declarations'],
