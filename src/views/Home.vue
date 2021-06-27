@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" md="6" class="text-center">
+    <v-col cols="12" md="6" class="mt-16 text-center">
       <v-row class="py-12" align="center" justify="center">
         <span class="font-weight-thin title" v-text="`${today.year}/`" />
         <span class="pl-2 display-1" v-text="`${today.month}/${today.day}`" />
