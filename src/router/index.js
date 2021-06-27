@@ -15,7 +15,7 @@ const routes = [
     component: HomeComponent,
   },
   {
-    path: '/calendart/:type',
+    path: '/calendar/:type',
     name: 'Calendar',
     component: CalendarComponent,
     props: true,

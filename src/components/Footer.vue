@@ -5,23 +5,15 @@
         <span>home</span>
         <v-icon large>home</v-icon>
       </v-btn>
-      <v-btn class="my-auto" height="56" @click="routerPush('/calendar/daily')">
+      <v-btn class="my-auto" height="56" @click="routerPush('/calendar/day')">
         <span>daily</span>
         <v-icon large>view_day</v-icon>
       </v-btn>
-      <v-btn
-        class="my-auto"
-        height="56"
-        @click="routerPush('/calendaer/weekly')"
-      >
+      <v-btn class="my-auto" height="56" @click="routerPush('/calendar/week')">
         <span>weekly</span>
         <v-icon large>view_week</v-icon>
       </v-btn>
-      <v-btn
-        class="my-auto"
-        height="56"
-        @click="routerPush('/calendar/monthly')"
-      >
+      <v-btn class="my-auto" height="56" @click="routerPush('/calendar/month')">
         <span>monthly</span>
         <v-icon large>event_note</v-icon>
       </v-btn>
