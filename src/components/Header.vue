@@ -35,7 +35,6 @@ export default defineComponent({
 
     // サインイン済のときはサインインのボタンを出さないで、こんにちは、XXさんを出す
     const greeting = computed(() => {
-      console.log(signInUser);
       return `こんにちは ${signInUser.value.nickname}さん`;
     });
 
