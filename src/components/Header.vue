@@ -2,60 +2,25 @@
   <v-app-bar color="primary" app>
     <v-toolbar-title class="white--text">Calendar APP</v-toolbar-title>
     <v-spacer />
-    <span v-if="!isSignInPage" class="clickable" @click="signIn"
-      >サインイン</span
+    <span v-if="signInUser" class="appbar__text" v-text="greeting"></span>
+    <span
+      v-if="!isSignInPage && !signInUser"
+      class="appbar__text clickable"
+      @click="signIn"
     >
+      サインイン
+    </span>
   </v-app-bar>
 </template>
 
 <script>
-import {
-  defineComponent,
-  // reactvie,
-  computed,
-  // toRefs,
-  // watch,
-  // getCurrentInstance,
-} from '@vue/composition-api';
-
-// https://github.com/vuejs/composition-api/issues/630
-// function useRoute() {
-//   const vm = getCurrentInstance();
-//   if (!vm) throw new Error('must be called in setup');
-
-//   console.log(vm);
-
-//   return vm.proxy.$route;
-// }
+import { defineComponent, computed } from '@vue/composition-api';
+import { profileStore } from '@/store/profile';
 
 export default defineComponent({
   setup(props, context) {
-    // https://stackoverflow.com/questions/65989489/best-way-to-get-current-route-in-vue3-and-vue-router
-    const path = computed(() => context.root.$route.path);
-
-    // const route = useRoute();
-
-    // https://stackoverflow.com/questions/66815981/vue-router-get-route-params-using-the-vue-2-composition-api
-    // const route = context.root.$route;
-
-    // const state = reactvie({
-    //   currentPath: computed(() => {
-    //     return context.root.proxy.$route.path;
-    //   }),
-    // });
-
-    // watch(
-    //   () => context.root.$route,
-    //   (r) => {
-    //     state.route = r;
-    //   },
-    // );
-
-    // const currentPath = computed(() => {
-    //   context.root.$router.path;
-    // });
-
     // サインイン画面に来ているときはサインインのテキストを出さない
+    const path = computed(() => context.root.$route.path);
     const isSignInPage = computed(() => {
       return path.value === '/sign-in';
     });
@@ -64,21 +29,34 @@ export default defineComponent({
       context.root.$router.push('/sign-in');
     };
 
-    // TODO サインイン済のときはサインインのボタンを出さないで、こんにちは、XXさんを出す
+    const signInUser = computed(() => {
+      return profileStore.profile;
+    });
+
+    // サインイン済のときはサインインのボタンを出さないで、こんにちは、XXさんを出す
+    const greeting = computed(() => {
+      console.log(signInUser);
+      return `こんにちは ${signInUser.value.nickname}さん`;
+    });
 
     return {
-      // ...toRefs(state),
       signIn,
       isSignInPage,
+      greeting,
+      signInUser,
     };
   },
 });
 </script>
 
 <style scoped>
+.appbar__text {
+  color: #fff;
+  font-weight: bold;
+}
+
 .clickable {
   align-items: center;
-  color: #bbe;
   display: flex;
   height: 100%;
   justify-content: center;
@@ -86,6 +64,5 @@ export default defineComponent({
 
 .clickable:hover {
   cursor: pointer;
-  /* display: block; */
 }
 </style>
